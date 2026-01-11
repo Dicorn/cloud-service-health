@@ -1,3 +1,5 @@
+//src/app/components/issues/table-filters.tsx
+
 'use client';
 
 import { Table } from '@tanstack/react-table';

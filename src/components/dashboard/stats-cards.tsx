@@ -1,3 +1,5 @@
+//src/components/dashboard/stats-cards.tsx
+
 'use client';
 
 import { useStats } from '@/lib/hooks/use-stats';
@@ -8,7 +10,9 @@ interface StatsCardsProps {
 }
 
 export function StatsCards({ days }: StatsCardsProps) {
-  const { data: stats, isLoading } = useStats(days);
+  const { data, isLoading } = useStats(days);
+
+  const stats = data?.stats;
 
   if (isLoading) {
     return (
@@ -41,7 +45,7 @@ export function StatsCards({ days }: StatsCardsProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.total}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xm text-muted-foreground">
               Últimos {stats.days} días
             </p>
           </CardContent>
@@ -55,7 +59,7 @@ export function StatsCards({ days }: StatsCardsProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-orange-600">{stats.active}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xm text-muted-foreground">
               Requieren atención
             </p>
           </CardContent>
@@ -69,7 +73,7 @@ export function StatsCards({ days }: StatsCardsProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">{stats.resolved}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xm text-muted-foreground">
               Ya solucionados
             </p>
           </CardContent>
@@ -85,7 +89,7 @@ export function StatsCards({ days }: StatsCardsProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">{stats.incidentsActive}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xm text-muted-foreground">
               {stats.incidents} totales · {stats.incidents - stats.incidentsActive} resueltos
             </p>
           </CardContent>
@@ -98,7 +102,7 @@ export function StatsCards({ days }: StatsCardsProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-orange-600">{stats.advisoriesActive}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xm text-muted-foreground">
               {stats.advisories} totales · {stats.advisories - stats.advisoriesActive} resueltos
             </p>
           </CardContent>

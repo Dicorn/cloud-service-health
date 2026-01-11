@@ -1,14 +1,14 @@
-//src/lib/hooks/use-stats.ts
+//src/lib/hooks/use-cloudflare-stats.ts
 
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../api';
 
-export function useStats(days: number = 30) {
+export function useCloudflareStats(days: number = 30) {
   return useQuery({
-    queryKey: ['stats', days],
-    queryFn: () => api.getStats(days),
+    queryKey: ['cloudflare-stats', days],
+    queryFn: () => api.cloudflare.getStats(days),
     staleTime: 5 * 60 * 1000,
     refetchInterval: 5 * 60 * 1000,
   });

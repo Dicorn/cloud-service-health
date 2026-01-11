@@ -1,3 +1,5 @@
+//src/app/components/issues-table.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -24,6 +26,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { IssueDetailDialog } from './issue-detail-dialog';
 
 interface IssuesTableProps {
   data: Issue[];
@@ -34,6 +37,8 @@ export function IssuesTable({ data }: IssuesTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
+  const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   // 🎯 TanStack Table - Aquí está la magia
   const table = useReactTable({
@@ -47,19 +52,21 @@ export function IssuesTable({ data }: IssuesTableProps) {
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
-    
-    // ⚡ AQUÍ ES DONDE TODO ES INSTANTÁNEO
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),   // Filtros 0ms
-    getPaginationRowModel: getPaginationRowModel(), // Paginación 0ms
-    getSortedRowModel: getSortedRowModel(),        // Sorting 0ms
-    
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     initialState: {
       pagination: {
         pageSize: 10,
       },
     },
   });
+
+  const handleRowClick = (issue: Issue) => {
+    setSelectedIssue(issue);
+    setIsDetailOpen(true);
+  };
 
   return (
     <div className="space-y-4">
@@ -96,6 +103,7 @@ export function IssuesTable({ data }: IssuesTableProps) {
                 <TableRow
                   key={row.id}
                   className="cursor-pointer hover:bg-muted/50"
+                  onClick={() => handleRowClick(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -148,6 +156,12 @@ export function IssuesTable({ data }: IssuesTableProps) {
           </Button>
         </div>
       </div>
+
+      <IssueDetailDialog
+        issue={selectedIssue}
+        open={isDetailOpen}
+        onOpenChange={setIsDetailOpen}
+      />
     </div>
   );
 }
